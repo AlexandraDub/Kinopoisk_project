@@ -1,0 +1,131 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+.main__container { 
+    background: linear-gradient(90deg, #131111,#43225e);
+    height: 1000px;
+    font-family: 'Ubuntu', sans-serif;
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+.header {
+    width: 100%;
+    height: auto;
+    background-color: rgb(34, 12, 54);
+    position: fixed;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.search {
+    margin: 10px 5px;
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.search_input {
+    width: 100%;
+    margin-left: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(34, 12, 54);
+    color: aliceblue;
+}
+.search_input:focus::-webkit-input-placeholder {
+    color: #9971a7;
+    text-shadow: none;
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+#search_button {
+    border: none;
+    background-color: rgb(34, 12, 54);
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    color: aliceblue;
+}
+.login {
+    margin: 10px 5px;
+}
+.button_login {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: mediumpurple 0px 0px 17px 8px;
+    color: aliceblue;
+    background-color: rgb(34, 12, 54);
+}
+.button_login:hover, .social__item:hover, #search_button:hover {
+    box-shadow: violet 0px 0px 17px 8px;
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: ease-in-out 300ms;
+}
+.footer {
+    width: 100%;
+    height: auto;
+    background-color: rgb(34, 12, 54);
+    position:fixed;
+    bottom:0px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.social__media {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0;
+}
+.social__item {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #9971a7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+}
+.social__item img {
+    height: 18px;
+}
+.contacts, .rights {
+    margin: 5px 0;
+}
+.films {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 0 50px;
+
+}
+.episode {
+    width: 27%;
+    height: 250px;
+    border-radius: 20px;
+    margin: 10px 10px;
+    /* background: url(../Images/ep2.jpg) no-repeat; */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.films_info {
+    color: aliceblue;
+    position: sticky;
+    bottom: 0;
+}
