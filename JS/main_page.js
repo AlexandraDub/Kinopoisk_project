@@ -4,14 +4,14 @@ const filmNumber = 6
 let filmDataArr = []
 
 const signInButton = document.querySelector('#login')
-signInButton.addEventListener('click', () => sortFilms(sortByReleaseDateDesc))
+const ascSort = document.querySelector('#sort')
+ascSort.addEventListener('change', sortFilms)
 
 async function loadInfo() {
 
     for (let i = 1; i <= filmNumber; i++) {
         let response = await fetch(`https://swapi.dev/api/films/${i}/`);
         let result = await response.json();
-        console.log(result);
         filmDataArr.push(result)
     }
 
@@ -56,8 +56,25 @@ function sortByReleaseDateDesc(filmData1, filmData2){
     return Date.parse(filmData2.release_date) - Date.parse(filmData1.release_date)
 }
 
-function sortFilms(comparator) {
-    filmDataArr.sort(comparator)
+function sortFilms() {
+
+    if (ascSort.value === 'episode_ascending_sort'){
+        filmDataArr.sort(sortByEpisodeAsc)
+    }
+
+    if (ascSort.value === 'episode_descending_sort'){
+        filmDataArr.sort(sortByEpisodeDesc)
+    }
+
+    if (ascSort.value === 'release_ascending_sort'){
+        filmDataArr.sort(sortByReleaseDateAsc) 
+    }
+
+    if (ascSort.value === 'release_descending_sort'){
+        filmDataArr.sort(sortByReleaseDateDesc)
+    }
+
+    
     filmsRender()
 }
 

@@ -1,11 +1,12 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    font-size: 1em;
+    font-family: 'Ubuntu', sans-serif;
 }
-.main__container { 
+.main__container, .login__container { 
     background: linear-gradient(90deg, #131111,#43225e);
     height: 1000px;
-    font-family: 'Ubuntu', sans-serif;
     color: aliceblue;
     display: flex;
     flex-direction: column;
@@ -14,17 +15,18 @@
 }
 .header {
     width: 100%;
-    height: auto;
+    height: 100px;
     background-color: rgb(34, 12, 54);
     position: fixed;
     top: 0;
+    z-index: 100;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
 .search {
-    margin: 10px 5px;
+    margin: 10px 50px;
     width: 30%;
     display: flex;
     flex-direction: row;
@@ -49,6 +51,19 @@
   'GRAD' 0,
   'opsz' 48
 }
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 40px!important;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+}
 #search_button {
     border: none;
     background-color: rgb(34, 12, 54);
@@ -58,7 +73,7 @@
     color: aliceblue;
 }
 .login {
-    margin: 10px 5px;
+    margin: 10px 50px;
 }
 .button_login {
     width: 50px;
@@ -69,11 +84,38 @@
     color: aliceblue;
     background-color: rgb(34, 12, 54);
 }
-.button_login:hover, .social__item:hover, #search_button:hover {
+.link_to_login:hover,
+.link_to_login:active,
+.link_to_login {
+    text-decoration: none;
+    color: aliceblue;
+}
+.button_login:hover, .social__item:hover, #search_button:hover, #list_view:hover, #tiles_view:hover {
     box-shadow: violet 0px 0px 17px 8px;
     cursor: pointer;
     transform: scale(1.1);
     transition: ease-in-out 300ms;
+}
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.sort_options, .view_options {
+    margin: 10px 50px;
+}
+.sort_options {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-evenly;
+    font-size: x-large;
+}
+#sort {
+    border: none;
+    background-color: rgb(34, 12, 54);
+    color: aliceblue;
+    outline: none;
 }
 .footer {
     width: 100%;
@@ -123,9 +165,20 @@
     /* background: url(../Images/ep2.jpg) no-repeat; */
     background-size: cover;
     background-repeat: no-repeat;
+    position: relative;
 }
 .films_info {
+    position: absolute;
+    bottom: 5px;
+    left:12%;
+    right: 12%;
     color: aliceblue;
-    position: sticky;
-    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    align-content: center;
+    gap: 1em;
+    letter-spacing: 1px;
+    font-size: 1.2em;
 }
