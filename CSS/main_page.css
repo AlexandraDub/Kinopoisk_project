@@ -6,7 +6,7 @@
 }
 .main__container, .login__container { 
     background: linear-gradient(90deg, #131111,#43225e);
-    height: 1000px;
+    height: 1500px;
     color: aliceblue;
     display: flex;
     flex-direction: column;
@@ -149,7 +149,11 @@
 .contacts, .rights {
     margin: 5px 0;
 }
+.films__container {
+    overflow: scroll;
+}
 .films {
+    height: auto;
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
@@ -157,8 +161,31 @@
     padding: 0 50px;
 
 }
-.episode {
+.films_list {
+    display: flex;
+    flex-direction: column;
+}
+.films_info_list {
+    flex-direction: row!important;
+}
+.episode_and_info_container {
     width: 27%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px 0;
+}
+.episode_and_info_container_list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 50px 0;
+    align-content: center;
+    justify-content: space-between;
+}
+.episode_tile {
+    width: 100%;
     height: 250px;
     border-radius: 20px;
     margin: 10px 10px;
@@ -167,11 +194,39 @@
     background-repeat: no-repeat;
     position: relative;
 }
+.episode_list {
+    width: 25%;
+    height: 130px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: solid 1px whitesmoke;
+}
+.episode:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+    transition: ease-in-out 300ms;
+    
+}
+#ep1:hover {
+    box-shadow: lightblue 0px 0px 17px 8px;
+}
+#ep2:hover {
+    box-shadow: gold 0px 0px 17px 8px;
+}
+#ep3:hover {
+    box-shadow: orangered 0px 0px 17px 8px;
+}
+#ep4:hover {
+    box-shadow: violet 0px 0px 17px 8px;
+}
+#ep5:hover {
+    box-shadow: aliceblue 0px 0px 17px 8px;
+}
+#ep6:hover {
+    box-shadow: lawngreen 0px 0px 17px 8px;
+}
+
 .films_info {
-    position: absolute;
-    bottom: 5px;
-    left:12%;
-    right: 12%;
     color: aliceblue;
     display: flex;
     flex-direction: column;

@@ -87,7 +87,12 @@
     justify-content: space-around;
     margin-top: 40px;
 }
-
+#contact button[type="submit"]:hover {
+    box-shadow: violet 0px 0px 17px 8px;
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: ease-in-out 300ms;
+}
 
 .input__line__under {
     width: 80%;
