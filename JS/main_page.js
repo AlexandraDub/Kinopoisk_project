@@ -12,6 +12,25 @@ const tilesView = document.querySelector('#tiles_view')
 listView.addEventListener('click', listViewApply)
 tilesView.addEventListener('click', tilesViewApply)
 
+const loaderWrapper = document.createElement('div')
+const loader = document.createElement('div')
+    
+function showLoader() {
+    loaderWrapper.classList.add('loader_wrapper')
+    loader.classList.add('lds-roller')
+    loader.innerHTML = "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>"  
+    filmsImagesContainer.append(loaderWrapper)
+    loaderWrapper.append(loader)
+    let epInfContainers = document.querySelectorAll('.episode_and_info_container')
+    epInfContainers.forEach(e => e.classList.add('hidden'))
+    
+}
+function hideLoader() {
+    loaderWrapper.classList.add('hidden')
+}
+
+    
+
 function listViewApply() {
 
     // получаем юзера из куки
@@ -48,19 +67,21 @@ function tilesViewApply() {
 
 
 async function loadInfo() {
+    showLoader()
 
     for (let i = 1; i <= filmNumber; i++) {
         let response = await fetch(`https://swapi.dev/api/films/${i}/`);
         let result = await response.json();
         filmDataArr.push(result)
+        // loader.classList.add('hidden')
     }
-
+    
     filmsRender()
 }
 
 function filmsRender() {
 
-    filmsImagesContainer.innerHTML = ''
+    // filmsImagesContainer.innerHTML = ''
 
     for (let i = 1; i <= filmNumber; i++) {
 
@@ -68,6 +89,7 @@ function filmsRender() {
         const episode = document.createElement('div')
         const info = document.createElement('div')
         const episodeAndInfoContainer = document.createElement('div')
+        
         episodeAndInfoContainer.classList.add('episode_and_info_container')
         episode.style.backgroundImage = `url(../Images/ep${filmData.episode_id}.png)`;
         episode.classList.add('episode')
@@ -83,7 +105,8 @@ function filmsRender() {
         filmsImagesContainer.append(episodeAndInfoContainer)
         episodeAndInfoContainer.append(episode)
         episodeAndInfoContainer.append(info)
-
+        hideLoader()
+        // episodeAndInfoContainer.classList.remove('hidden')
         episode.addEventListener('click', openFilmsDescription)
         
         function openFilmsDescription(event) {
@@ -95,6 +118,7 @@ function filmsRender() {
     }
 
 }
+
 
 
 
