@@ -1,3 +1,5 @@
+
+
 const filmsImagesContainer = document.querySelector('.films')
 const filmNumber = 6
 
@@ -42,6 +44,7 @@ function listViewApply() {
     // let userdata = localstorage.get...
 
     // userdata.view = 'list' 
+    updateViewPreferences('sasa', 'episode_list')
 
     let episodes = document.querySelectorAll('.episode')
     let informs = document.querySelectorAll('.films_info')
@@ -55,6 +58,10 @@ function listViewApply() {
 }
 
 function tilesViewApply() {
+
+    updateViewPreferences('sasa', 'episode_tile')
+
+
     let episodes = document.querySelectorAll('.episode')
     let informs = document.querySelectorAll('.films_info')
     let epInfContainers = document.querySelectorAll('.episode_and_info_container')
@@ -103,9 +110,23 @@ function filmsRender() {
         // получаешь имя пользователя из кук
         // получаешь юзердату из локалсторадж по имени пользователя
         // устанавливаешь класс из юзердаты
-        episode.classList.add('episode_tile')
+
+        let username = 'sasa'
+        let userPreferences = getViewPreferences(username)
+        
+
+
+
+        episode.classList.add(userPreferences)
 
         info.classList.add('films_info')
+
+        if (userPreferences === 'episode_list'){
+            filmsImagesContainer.classList.add('films_list')
+            info.classList.add('films_info_list')
+            episodeAndInfoContainer.classList.add('episode_and_info_container_list')
+        }
+
         episode.id = `ep${filmData.episode_id}`
         info.innerHTML = `<div> Episode ${filmData.episode_id}</div><div>${filmData.title}</div> <div>Release date:${filmData.release_date}</div>`
         filmsImagesContainer.append(episodeAndInfoContainer)
