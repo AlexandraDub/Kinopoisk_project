@@ -14,6 +14,8 @@ tilesView.addEventListener('click', tilesViewApply)
 
 const loaderWrapper = document.createElement('div')
 const loader = document.createElement('div')
+
+const filmMapper = new Map()
     
 function showLoader() {
     loaderWrapper.classList.add('loader_wrapper')
@@ -21,10 +23,11 @@ function showLoader() {
     loader.innerHTML = "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>"  
     filmsImagesContainer.append(loaderWrapper)
     loaderWrapper.append(loader)
-    let epInfContainers = document.querySelectorAll('.episode_and_info_container')
-    epInfContainers.forEach(e => e.classList.add('hidden'))
+    //let epInfContainers = document.querySelectorAll('.episode_and_info_container')
+    //epInfContainers.forEach(e => e.classList.add('hidden'))
     
 }
+
 function hideLoader() {
     loaderWrapper.classList.add('hidden')
 }
@@ -39,8 +42,6 @@ function listViewApply() {
     // let userdata = localstorage.get...
 
     // userdata.view = 'list' 
-
-
 
     let episodes = document.querySelectorAll('.episode')
     let informs = document.querySelectorAll('.films_info')
@@ -72,16 +73,21 @@ async function loadInfo() {
     for (let i = 1; i <= filmNumber; i++) {
         let response = await fetch(`https://swapi.dev/api/films/${i}/`);
         let result = await response.json();
+        console.log('fetch', result)
         filmDataArr.push(result)
+        filmMapper.set(result.episode_id, i)
         // loader.classList.add('hidden')
     }
+    console.log(filmMapper)
     
     filmsRender()
 }
 
 function filmsRender() {
 
-    // filmsImagesContainer.innerHTML = ''
+    filmsImagesContainer.innerHTML = ''
+
+    hideLoader()
 
     for (let i = 1; i <= filmNumber; i++) {
 
@@ -105,18 +111,17 @@ function filmsRender() {
         filmsImagesContainer.append(episodeAndInfoContainer)
         episodeAndInfoContainer.append(episode)
         episodeAndInfoContainer.append(info)
-        hideLoader()
+        
         // episodeAndInfoContainer.classList.remove('hidden')
         episode.addEventListener('click', openFilmsDescription)
         
         function openFilmsDescription(event) {
             event.preventDefault()
-            window.location = `film_description.html?episode_id=${filmData.episode_id}`
+            window.location = `film_description.html?swapiId=${filmMapper.get(filmData.episode_id)}&episodeId=${filmData.episode_id}`
 
         }
 
     }
-
 }
 
 

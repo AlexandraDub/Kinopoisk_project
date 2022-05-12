@@ -6,8 +6,42 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
+}
+.description__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    align-content: flex-start;
+    gap: 3em;
+    margin: 140px 50px;
+    font-size: 20px;
+    text-shadow: 10px 10px 10px;
+}
+#episode1 {
+    color:aliceblue;
+    text-shadow: 10px 3px 6px violet;
+}
+#episode2 {
+    color:maroon;
+    text-shadow: 10px 3px 6px violet;
+}
+#episode3 {
+    color: #eee28c;
+    text-shadow: 10px 3px 6px #f09129;
+}
+#episode4 {
+    color: aliceblue;
+    text-shadow: 10px 3px 6px #6c55f3;
+}
+#episode5 {
+    color: aliceblue;
+    text-shadow: 10px 3px 6px #2a9010;
+}
+#episode6 {
+    color: #a4f186;
+    text-shadow: 10px 11px 6px #020e01;
 }
 .desc_item {
-    background-color: darkgreen;
+    
 }
