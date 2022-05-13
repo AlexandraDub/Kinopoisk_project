@@ -17,6 +17,16 @@
     margin: 140px 50px;
     font-size: 20px;
     text-shadow: 10px 10px 10px;
+    position: relative;
+}
+.picture_episode {
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    background-size: cover;
+    top: 67px;
+    right: 70px;
+    border: solid 1px;
 }
 #episode1 {
     color:aliceblue;
@@ -44,4 +54,17 @@
 }
 .desc_item {
     
+}
+.favorites_container {
+    position: absolute;
+    right: 28px;
+    top: -4%;
+    cursor: pointer;
+}
+.chracter {
+    
+}
+.picture_wrapper {
+    width: 100px;
+    height: 150px;
 }

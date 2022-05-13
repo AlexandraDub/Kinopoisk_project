@@ -18,6 +18,10 @@ const loaderWrapper = document.createElement('div')
 const loader = document.createElement('div')
 
 const filmMapper = new Map()
+
+const preferenceFilms = new Set(getPreferenceFilm('sasa'))
+
+
     
 function showLoader() {
     loaderWrapper.classList.add('loader_wrapper')
@@ -92,6 +96,8 @@ async function loadInfo() {
 
 function filmsRender() {
 
+    console.log("preferenceFilm", preferenceFilms)
+
     filmsImagesContainer.innerHTML = ''
 
     hideLoader()
@@ -102,7 +108,33 @@ function filmsRender() {
         const episode = document.createElement('div')
         const info = document.createElement('div')
         const episodeAndInfoContainer = document.createElement('div')
+        const favoriteIcon = document.createElement('div')
         
+        favoriteIcon.classList.add('favorites_container')
+        
+        console.log(preferenceFilms)
+        console.log(typeof preferenceFilms)
+
+        if (preferenceFilms.has(filmData.episode_id)){
+            favoriteIcon.classList.add('is-in-favourite')
+        }
+
+        favoriteIcon.innerHTML = `<i class="fa fa-star fa-2x" class="favorites" id=favoriteEpisode${filmData.episode_id}></i>`
+        
+
+        favoriteIcon.addEventListener('click',changePreferenceFilm)
+        function changePreferenceFilm() {
+            if (preferenceFilms.has(filmData.episode_id)){
+                preferenceFilms.delete(filmData.episode_id)
+                favoriteIcon.classList.remove('is-in-favourite')
+                removePreferenceFilm('sasa', filmData.episode_id)
+            } else {
+                preferenceFilms.add(filmData.episode_id)
+                favoriteIcon.classList.add('is-in-favourite')
+                addPreferenceFilm('sasa', filmData.episode_id)
+            }
+        }
+
         episodeAndInfoContainer.classList.add('episode_and_info_container')
         episode.style.backgroundImage = `url(../Images/ep${filmData.episode_id}.png)`;
         episode.classList.add('episode')
@@ -132,7 +164,7 @@ function filmsRender() {
         filmsImagesContainer.append(episodeAndInfoContainer)
         episodeAndInfoContainer.append(episode)
         episodeAndInfoContainer.append(info)
-        
+        episodeAndInfoContainer.prepend(favoriteIcon)
         // episodeAndInfoContainer.classList.remove('hidden')
         episode.addEventListener('click', openFilmsDescription)
         
@@ -190,6 +222,7 @@ function sortFilms() {
 
 
 loadInfo()
+
 
 // РЕГИСТРАЦИЯ
 
