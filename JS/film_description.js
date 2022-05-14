@@ -54,6 +54,8 @@ function descriptionRender() {
     const text = document.createElement('div')
     text.classList.add('desc_item')
     text.innerHTML = `<span>Opening:${infoData.opening_crawl}</span>`
+    const charactersTextInfo = document.createElement('div')
+    charactersTextInfo.textContent = 'Characters:'
     
     containerForFilmDescription.prepend(favoriteIcon)
     containerForFilmDescription.append(pictureEpisode)
@@ -63,12 +65,18 @@ function descriptionRender() {
     containerForFilmDescription.append(director)
     containerForFilmDescription.append(producer)
     containerForFilmDescription.append(text)
+    containerForFilmDescription.append(charactersTextInfo)
+
+    
 
     charactersLoad()
     
 }
-
+const charactersContainer = document.createElement('div')
 async function charactersLoad() {
+    charactersContainer.classList.add('character')
+    // characters.innerHTML = `<span>Characters${arrayOfCharacters[0]}</span>`
+    containerForFilmDescription.append(charactersContainer)
     for(let n = loadedCharacters; n < loadedCharacters + 10; n++) {
         if (infoData.characters[n] != null){
 
@@ -95,22 +103,19 @@ async function charactersLoad() {
 }
 
 function characterRender(result) {
-    const charactersContainer = document.createElement('div')
-    charactersContainer.classList.add('character')
-    // characters.innerHTML = `<span>Characters${arrayOfCharacters[0]}</span>`
-    containerForFilmDescription.append(charactersContainer)
-
+    const pictureAndWikiWrapper = document.createElement('div')
+    pictureAndWikiWrapper.classList.add('pic_wiki_wrap')
     const pictureWrapper = document.createElement('div')
-    
-    pictureWrapper.innerHTML = `<img src="${result.image}" alt = "person">`
+    pictureWrapper.style.backgroundImage = `url("${result.image}")`;
     pictureWrapper.classList.add('picture_wrapper')
 
     const wikiLinkWrapper = document.createElement('div')
     wikiLinkWrapper.innerHTML = `<a href = "${result.wiki}">${result.name}</a>`
+    wikiLinkWrapper.classList.add('wiki_link')
    
-
-    charactersContainer.append(pictureWrapper)
-    charactersContainer.append(wikiLinkWrapper)
+    charactersContainer.append(pictureAndWikiWrapper)
+    pictureAndWikiWrapper.append(pictureWrapper)
+    pictureAndWikiWrapper.append(wikiLinkWrapper)
 
 }
 
