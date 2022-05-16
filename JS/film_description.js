@@ -11,6 +11,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 const swapiId = params.swapiId
 const episodeId = params.episodeId
+const preferenceFilms = new Set(getPreferenceFilm('sasa'))
 
 backgroundContainer.style.backgroundImage = `url(../Images/ep${episodeId}bg.jpg)`;
 containerForFilmDescription.id = `episode${episodeId}`
@@ -31,6 +32,21 @@ function descriptionRender() {
     const favoriteIcon = document.createElement('div')
     favoriteIcon.classList.add('favorites_container')
     favoriteIcon.innerHTML = `Add this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
+    favoriteIcon.addEventListener('click',changePreferenceFilm)
+    if (preferenceFilms.has(infoData.episode_id)){
+        favoriteIcon.classList.add('is-in-favourite')
+    }
+        function changePreferenceFilm() {
+            if (preferenceFilms.has(infoData.episode_id)){
+                preferenceFilms.delete(infoData.episode_id)
+                favoriteIcon.classList.remove('is-in-favourite')
+                removePreferenceFilm('sasa', infoData.episode_id)
+            } else {
+                preferenceFilms.add(infoData.episode_id)
+                favoriteIcon.classList.add('is-in-favourite')
+                addPreferenceFilm('sasa', infoData.episode_id)
+            }
+        }
 
     const pictureEpisode = document.createElement('div')
     pictureEpisode.classList.add('picture_episode')
@@ -77,7 +93,7 @@ async function charactersLoad() {
     charactersContainer.classList.add('character')
     // characters.innerHTML = `<span>Characters${arrayOfCharacters[0]}</span>`
     containerForFilmDescription.append(charactersContainer)
-    for(let n = loadedCharacters; n < loadedCharacters + 10; n++) {
+    for(let n = loadedCharacters; n < loadedCharacters + 5; n++) {
         if (infoData.characters[n] != null){
 
             let swapiUrl = infoData.characters[n]
@@ -99,7 +115,7 @@ async function charactersLoad() {
         
     }
 
-    loadedCharacters += 10
+    loadedCharacters += 5
 }
 
 function characterRender(result) {
