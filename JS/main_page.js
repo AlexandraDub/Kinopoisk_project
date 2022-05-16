@@ -222,6 +222,7 @@ function sortFilms() {
 
 
 loadInfo()
+createStorage()
 
 
 // РЕГИСТРАЦИЯ

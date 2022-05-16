@@ -37,8 +37,8 @@
     position: relative;
 }
 .picture_episode {
-    width: 400px;
-    height: 200px;
+    width: 42%;
+    height: 37%;
     position: absolute;
     background-size: cover;
     top: 67px;
@@ -70,9 +70,9 @@
     color: #a4f186;
     text-shadow: 10px 11px 6px #020e01;
 }
-.desc_item {
+/* .desc_item {
     
-}
+} */
 .favorites_container {
     position: absolute;
     right: 28px;

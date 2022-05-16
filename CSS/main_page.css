@@ -168,9 +168,6 @@
 .contacts, .rights {
     margin: 5px 0;
 }
-.films__container {
-    overflow: scroll;
-}
 /* Спиннер */
 .loader_wrapper {
     width: 100%;
@@ -273,6 +270,9 @@
     justify-content: space-between;
     padding: 0 50px;
 
+}
+.films__container {
+    width: 100%;
 }
 .films_list {
     display: flex;

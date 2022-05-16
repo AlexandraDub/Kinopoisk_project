@@ -101,7 +101,7 @@ async function charactersLoad() {
             let characterId = swapiArr[swapiArr.length - 2]
             console.log(swapiArr)
 
-            let starWarsUrl = `https://star--wars.herokuapp.com/people/${characterId}`
+            let starWarsUrl = `https://star--wars.herokuapp.com/people/${characterId} `
             let response = await fetch(starWarsUrl);
             let result = await response.json();
 
