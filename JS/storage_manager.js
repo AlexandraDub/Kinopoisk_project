@@ -10,7 +10,7 @@ function createStorage() {
 
 //
 
-function newUser(username, password, email) {
+async function createNewUser(username, password, email) {
     const avaNumber = Math.floor(Math.random() * 18)
 
     const user = {
@@ -27,10 +27,8 @@ function newUser(username, password, email) {
         }
     }
 
-    console.log('user', user)
-
-    fetch('https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users.json', {
-        method: 'POST',
+    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`, {
+        method: 'PUT',
         body: JSON.stringify(user),
         headers: {
             'Content-type': 'application/json'
@@ -38,22 +36,8 @@ function newUser(username, password, email) {
     })
 }
 
-function checkIfUserExist(username) {
-    fetch('https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users.json')
-        .then(response => response.json())
-        .then(users => {
-            for (let key in users){
-                console.log(users[key])
-                if (users[key].username === username){
-                    console.log('user found')
-                    return true
-                }
-            }
-            console.log('user not found')
-            return false
-        })
-}
-
-function getUser(username) {
-
+async function checkAvailableUsername(username) {
+    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+    .then(response => response.json())
+    .then(user => user === null)
 }

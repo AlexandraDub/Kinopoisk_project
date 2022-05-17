@@ -12,17 +12,29 @@ contact.addEventListener('submit', registerNewUser)
 
 function registerNewUser(event) {
     event.preventDefault()
+
     const userData = new FormData(contact)
-    console.log(userData.get('email'))
     // TODO validate
-    if (userData.get('password') != userData.get('repeatPassword')){
+    if (userData.get('password') != userData.get('repeatPassword')) {
         alert('Password must be the same with you')
         return
     }
-    if (checkIfUserExist(userData.get('username'))){
-        // TODO error message: User already exist, chose another username
-        alert('User already exist, create another username')
-        return
-    }
-    newUser(userData.get('username'), userData.get('password'), userData.get('email'))
+
+    checkAvailableUsername(userData.get('username'))
+        .then(isAvailable =>
+            isAvailable ?
+                createNewUserAndRedirect(userData.get('username'), userData.get('password'), userData.get('email')) :
+                showErrorMessage()
+        )
+
+}
+
+function createNewUserAndRedirect(username, password, email) {
+    createNewUser(username, password, email).
+        then(() => window.location.href = 'login.html')
+}
+
+function showErrorMessage() {
+    // TODO show error message 
+    alert('User already esist')
 }
