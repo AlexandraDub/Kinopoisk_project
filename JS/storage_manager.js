@@ -1,21 +1,13 @@
-function createStorage() {
-    fetch('https://kinopoisk-star-wars-default-rtdb.firebaseio.com/storage.json', {
-        method: 'POST',
-        body: JSON.stringify('{}'),
-        headers: {
-            'Content-type': 'application/json'
-        }
-    })
-}
-
-//
-
 async function createNewUser(username, password, email) {
     const avaNumber = Math.floor(Math.random() * 18)
 
+    let salt = Math.floor(Math.random() * 10000)
+    let passwordWithSaltMD5 = CryptoJS.MD5(password + salt).toString();
+
     const user = {
+        'salt': salt,
         'username': username,
-        'password': password,
+        'password': passwordWithSaltMD5,
         'email': email,
         'ava': avaNumber,
         'sortBy': 'release-date',
@@ -38,6 +30,25 @@ async function createNewUser(username, password, email) {
 
 async function checkAvailableUsername(username) {
     return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
-    .then(response => response.json())
-    .then(user => user === null)
+        .then(response => response.json())
+        .then(user => user === null)
+}
+
+async function loginAndGetSessionId(username, password) {
+    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            if (user === null) {
+                return null
+            }
+            if (CryptoJS.MD5(password + user.salt).toString() !== user.password) {
+                return null
+            }
+            let sessionId = `${username}_${Date.now()}`
+            return sessionId
+        })
+}
+
+function generateToken() {
+
 }

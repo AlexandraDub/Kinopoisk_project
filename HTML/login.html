@@ -30,16 +30,15 @@
             </header>
             <div class="log__form">
                 <div class="log__form__container">
-                    <form id="contact"
-                        action="https://fe.it-academy.by/TestForm.php"
+                    <form id="loginForm"
                         method="get">
                         <h1> Sign in</h1>
-                        <input type="text" placeholder="Username">
+                        <input type="text" placeholder="Username" name="username">
                         <div class ="input__line__under"></div>
                         <input placeholder="Enter your password"
-                            type="password">
+                            type="password" name="password">
                         <div class ="input__line__under"></div>
-                        <button name="Send" type="submit" id="contact-submit"
+                        <button name="Send" type="submit" id="login-submit"
                             data-submit="...Sending">Log in</button>
                             <div class="under__log__form" >Don't have an account?<a class="under__log__form reg__link" href="reg.html"> Register now for free!</a></div>
                     </form>
@@ -69,5 +68,11 @@
                     AlexandraDub</div>
             </footer>
         </div>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+        <script src="../JS/storage_manager.js"></script>
+        <script src="../JS/login.js"></script>    
     </body>
 </html>
