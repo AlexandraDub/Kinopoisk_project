@@ -10,14 +10,13 @@ async function createNewUser(username, password, email) {
         'password': passwordWithSaltMD5,
         'email': email,
         'ava': avaNumber,
-        'sortBy': 'release-date',
+        'sortBy': 'release_date',
         'sortType': 'asc',
         'renderType': 'tile',
-        'favourites': {
-            'episodeList': [],
-            'characterList': []
-        }
+        'favouriteEpisodes': [],
+        'favouriteCharacters': []
     }
+
 
     return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`, {
         method: 'PUT',
@@ -49,6 +48,48 @@ async function loginAndGetSessionId(username, password) {
         })
 }
 
-function generateToken() {
+async function fetchUserData(sessionId) {
+    console.log('Getching userdata from Firebase')
+    let username = sessionId.split('_')[0]
+    console.log('username: ', username)
 
+    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+
+}
+
+async function addFavouriteEpisode(username, episodeId) {
+    fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            if (!user.favouriteEpisodes) {
+                user.favouriteEpisodes = []
+            }
+            user.favouriteEpisodes.push(episodeId)
+            return user
+        })
+        .then(user => updateUser(username, user))
+}
+
+async function removeFavouriteEpisode(username, episodeId) {
+    fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            const index = user.favouriteEpisodes.indexOf(episodeId);
+            if (index > -1) {
+                user.favouriteEpisodes.splice(index, 1);
+            }
+            return user
+        })
+        .then(user => updateUser(username, user))
+}
+
+async function updateUser(username, user) {
+    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`, {
+        method: 'PUT',
+        body: JSON.stringify(user),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    })
 }

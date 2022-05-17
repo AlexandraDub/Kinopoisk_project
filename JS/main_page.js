@@ -1,44 +1,144 @@
-
+let userData = null
+let favouriteEpisodes = null
 
 const filmsImagesContainer = document.querySelector('.films')
-const filmNumber = 6
+const filmsCount = 6
 
-let filmDataArr = []
+const filmDataArr = []
+const episodeIdToSwapiIdMap = new Map()
 
 const signInButton = document.querySelector('#login')
 const ascSort = document.querySelector('#sort')
-ascSort.addEventListener('change', sortFilms)
+//ascSort.addEventListener('change', sortFilms)
 const listView = document.querySelector('#list_view')
 const tilesView = document.querySelector('#tiles_view')
 
-listView.addEventListener('click', listViewApply)
-tilesView.addEventListener('click', tilesViewApply)
+//listView.addEventListener('click', listViewApply)
+//tilesView.addEventListener('click', tilesViewApply)
 
 const loaderWrapper = document.createElement('div')
 const loader = document.createElement('div')
 
-const filmMapper = new Map()
-
-const preferenceFilms = new Set(getPreferenceFilm('sasa'))
 
 
-    
-function showLoader() {
-    loaderWrapper.classList.add('loader_wrapper')
-    loader.classList.add('lds-roller')
-    loader.innerHTML = "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>"  
-    filmsImagesContainer.append(loaderWrapper)
-    loaderWrapper.append(loader)
-    //let epInfContainers = document.querySelectorAll('.episode_and_info_container')
-    //epInfContainers.forEach(e => e.classList.add('hidden'))
-    
+//const preferenceFilms = new Set(getPreferenceFilm('sasa'))
+
+
+async function fetchData() {
+    //showLoader()
+
+
+    // fetch user
+    console.log('fetch user')
+    const sessionId = localStorage.getItem('my_star_wars_session_id')
+    console.log('sessionId', sessionId)
+
+    if (sessionId !== null) {
+        let user = await fetchUserData(sessionId)
+        console.log('user', user)
+        userData = user
+
+        const favouriteEpisodesArr = user ? (user.favouriteEpisodes ? user.favouriteEpisodes : []) : []
+        favouriteEpisodes = new Set(favouriteEpisodesArr)
+    }
+
+    // fetch films
+    for (let i = 1; i <= filmsCount; i++) {
+        let response = await fetch(`https://swapi.dev/api/films/${i}/`);
+        let result = await response.json();
+        console.log('fetch film', result)
+        filmDataArr.push(result)
+        episodeIdToSwapiIdMap.set(result.episode_id, i)
+    }
+
+    sortFilmDataArr()
+
+    filmsRender()
 }
 
-function hideLoader() {
-    loaderWrapper.classList.add('hidden')
-}
+function filmsRender() {
+
+    console.log('Films rendering...')
+
+    filmsImagesContainer.innerHTML = ''
+
+    //hideLoader()
 
     
+
+    for (let i = 1; i <= filmsCount; i++) {
+
+        const filmData = filmDataArr[i - 1]
+        const episodeDiv = document.createElement('div')
+        const episodeInfoDiv = document.createElement('div')
+        const episodeAndInfoContainerDiv = document.createElement('div')
+        episodeAndInfoContainerDiv.classList.add('episode_and_info_container')
+        episodeDiv.style.backgroundImage = `url(../Images/ep${filmData.episode_id}.png)`;
+        episodeDiv.classList.add('episode')
+
+        const favoriteIcon = document.createElement('div')
+
+        favoriteIcon.classList.add('favorites_container')
+
+        if (userData) {
+            if (favouriteEpisodes.has(filmData.episode_id)) {
+                favoriteIcon.classList.add('is-in-favourite') // rename
+            }
+        } else {
+            favoriteIcon.classList.add('favorites_container_hidden')
+        }
+        favoriteIcon.innerHTML = `<i class="fa fa-star fa-2x" class="favorites" id=favoriteEpisode${filmData.episode_id}></i>`
+
+        favoriteIcon.addEventListener('click', switchFavourite)
+
+        function switchFavourite() {
+            if (favouriteEpisodes.has(filmData.episode_id)) {
+                console.log('switch favourite - delete')
+                favouriteEpisodes.delete(filmData.episode_id)
+                favoriteIcon.classList.remove('is-in-favourite') // rename class
+
+                removeFavouriteEpisode(userData.username, filmData.episode_id)
+
+            } else {
+                console.log('switch favourite - add')
+                favouriteEpisodes.add(filmData.episode_id)
+                favoriteIcon.classList.add('is-in-favourite')
+
+                addFavouriteEpisode(userData.username, filmData.episode_id)
+
+            }
+        }
+        
+        let userPreferences = 'episode_tile'
+        episodeDiv.classList.add(userPreferences)
+
+        episodeInfoDiv.classList.add('films_info')
+
+        if (userPreferences === 'episode_list') {
+            filmsImagesContainer.classList.add('films_list')
+            episodeInfoDiv.classList.add('films_info_list')
+            episodeAndInfoContainerDiv.classList.add('episode_and_info_container_list')
+        }
+
+        episodeDiv.id = `ep${filmData.episode_id}`
+        episodeInfoDiv.innerHTML = `<div> Episode ${filmData.episode_id}</div><div>${filmData.title}</div> <div>Release date:${filmData.release_date}</div>`
+        filmsImagesContainer.append(episodeAndInfoContainerDiv)
+        episodeAndInfoContainerDiv.append(episodeDiv)
+        episodeAndInfoContainerDiv.append(episodeInfoDiv)
+        episodeAndInfoContainerDiv.prepend(favoriteIcon)
+        // episodeAndInfoContainer.classList.remove('hidden')
+        episodeDiv.addEventListener('click', openFilmsDescription)
+
+        function openFilmsDescription(event) {
+            event.preventDefault()
+            window.location = `film_description.html?swapiId=${episodeIdToSwapiIdMap.get(filmData.episode_id)}&episodeId=${filmData.episode_id}`
+        }
+
+    }
+}
+
+
+
 
 function listViewApply() {
 
@@ -78,107 +178,6 @@ function tilesViewApply() {
 }
 
 
-async function loadInfo() {
-    showLoader()
-
-    for (let i = 1; i <= filmNumber; i++) {
-        let response = await fetch(`https://swapi.dev/api/films/${i}/`);
-        let result = await response.json();
-        console.log('fetch', result)
-        filmDataArr.push(result)
-        filmMapper.set(result.episode_id, i)
-        // loader.classList.add('hidden')
-    }
-    console.log(filmMapper)
-    
-    filmsRender()
-}
-
-function filmsRender() {
-
-    console.log("preferenceFilm", preferenceFilms)
-
-    filmsImagesContainer.innerHTML = ''
-
-    hideLoader()
-
-    for (let i = 1; i <= filmNumber; i++) {
-
-        const filmData = filmDataArr[i - 1]
-        const episode = document.createElement('div')
-        const info = document.createElement('div')
-        const episodeAndInfoContainer = document.createElement('div')
-        const favoriteIcon = document.createElement('div')
-        
-        favoriteIcon.classList.add('favorites_container')
-        
-        console.log(preferenceFilms)
-        console.log(typeof preferenceFilms)
-
-        if (preferenceFilms.has(filmData.episode_id)){
-            favoriteIcon.classList.add('is-in-favourite')
-        }
-
-        favoriteIcon.innerHTML = `<i class="fa fa-star fa-2x" class="favorites" id=favoriteEpisode${filmData.episode_id}></i>`
-        
-
-        favoriteIcon.addEventListener('click',changePreferenceFilm)
-        function changePreferenceFilm() {
-            if (preferenceFilms.has(filmData.episode_id)){
-                preferenceFilms.delete(filmData.episode_id)
-                favoriteIcon.classList.remove('is-in-favourite')
-                removePreferenceFilm('sasa', filmData.episode_id)
-            } else {
-                preferenceFilms.add(filmData.episode_id)
-                favoriteIcon.classList.add('is-in-favourite')
-                addPreferenceFilm('sasa', filmData.episode_id)
-            }
-        }
-
-        episodeAndInfoContainer.classList.add('episode_and_info_container')
-        episode.style.backgroundImage = `url(../Images/ep${filmData.episode_id}.png)`;
-        episode.classList.add('episode')
-
-        // получаешь имя пользователя из кук
-        // получаешь юзердату из локалсторадж по имени пользователя
-        // устанавливаешь класс из юзердаты
-
-        let username = 'sasa'
-        let userPreferences = getViewPreferences(username)
-        
-
-
-
-        episode.classList.add(userPreferences)
-
-        info.classList.add('films_info')
-
-        if (userPreferences === 'episode_list'){
-            filmsImagesContainer.classList.add('films_list')
-            info.classList.add('films_info_list')
-            episodeAndInfoContainer.classList.add('episode_and_info_container_list')
-        }
-
-        episode.id = `ep${filmData.episode_id}`
-        info.innerHTML = `<div> Episode ${filmData.episode_id}</div><div>${filmData.title}</div> <div>Release date:${filmData.release_date}</div>`
-        filmsImagesContainer.append(episodeAndInfoContainer)
-        episodeAndInfoContainer.append(episode)
-        episodeAndInfoContainer.append(info)
-        episodeAndInfoContainer.prepend(favoriteIcon)
-        // episodeAndInfoContainer.classList.remove('hidden')
-        episode.addEventListener('click', openFilmsDescription)
-        
-        function openFilmsDescription(event) {
-            event.preventDefault()
-            window.location = `film_description.html?swapiId=${filmMapper.get(filmData.episode_id)}&episodeId=${filmData.episode_id}`
-
-        }
-
-    }
-}
-
-
-
 
 // Sort comparing functions 
 function sortByEpisodeAsc(filmData1, filmData2) {
@@ -197,32 +196,53 @@ function sortByReleaseDateDesc(filmData1, filmData2) {
     return Date.parse(filmData2.release_date) - Date.parse(filmData1.release_date)
 }
 
-function sortFilms() {
+function sortFilmDataArr() {
+    console.log('sorting films', userData)
+    if (!userData) {
+        console.log('Unauthorized users cannot sort films')
+        return
+    }
 
-    if (ascSort.value === 'episode_ascending_sort') {
+    if (userData.sortBy === 'episode_id' && userData.sortType === 'asc') {
+        console.log('sorting by episode id asc')
         filmDataArr.sort(sortByEpisodeAsc)
     }
 
-    if (ascSort.value === 'episode_descending_sort') {
+    if (userData.sortBy === 'episode_id' && userData.sortType === 'desc') {
+        console.log('sorting by episode desc')
+
         filmDataArr.sort(sortByEpisodeDesc)
     }
 
-    if (ascSort.value === 'release_ascending_sort') {
+    if (userData.sortBy === 'release_date' && userData.sortType === 'asc') {
+        console.log('sorting by release date asc')
         filmDataArr.sort(sortByReleaseDateAsc)
     }
 
-    if (ascSort.value === 'release_descending_sort') {
+    if (userData.sortBy === 'release_date' && userData.sortType === 'desc') {
+        console.log('sorting by release date desc')
         filmDataArr.sort(sortByReleaseDateDesc)
     }
-
-
-    filmsRender()
 }
 
+// spinner
+function showLoader() {
+    loaderWrapper.classList.add('loader_wrapper')
+    loader.classList.add('lds-roller')
+    loader.innerHTML = "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>"
+    filmsImagesContainer.append(loaderWrapper)
+    loaderWrapper.append(loader)
+    //let epInfContainers = document.querySelectorAll('.episode_and_info_container')
+    //epInfContainers.forEach(e => e.classList.add('hidden'))
 
+}
 
-loadInfo()
-createStorage()
+function hideLoader() {
+    loaderWrapper.classList.add('hidden')
+}
+
+fetchData()
+
 
 
 // РЕГИСТРАЦИЯ
