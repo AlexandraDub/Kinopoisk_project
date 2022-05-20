@@ -1,1 +1,10 @@
-html action it academy delete
+1. html action it academy delete
+2. sort buttun selected fix
+
+<select id="viewSelector" name="when" style="width:92%;">
+    <option value="USA">USA</option>
+    <option value="Australia" selected="selected">Australia</option>
+    <option value="Germany">Germany</option>
+</select>
+
+3. sorting after list button

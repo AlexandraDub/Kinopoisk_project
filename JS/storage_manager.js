@@ -12,7 +12,7 @@ async function createNewUser(username, password, email) {
         'ava': avaNumber,
         'sortBy': 'release_date',
         'sortType': 'asc',
-        'renderType': 'tile',
+        'filmRenderStyle': 'episode_tile',
         'favouriteEpisodes': [],
         'favouriteCharacters': []
     }
@@ -58,7 +58,7 @@ async function fetchUserData(sessionId) {
 
 }
 
-async function addFavouriteEpisode(username, episodeId) {
+async function addFavouriteEpisodeToUser(username, episodeId) {
     fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
         .then(response => response.json())
         .then(user => {
@@ -68,10 +68,10 @@ async function addFavouriteEpisode(username, episodeId) {
             user.favouriteEpisodes.push(episodeId)
             return user
         })
-        .then(user => updateUser(username, user))
+        .then(updateUser)
 }
 
-async function removeFavouriteEpisode(username, episodeId) {
+async function removeFavouriteEpisodeFromUser(username, episodeId) {
     fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
         .then(response => response.json())
         .then(user => {
@@ -81,11 +81,32 @@ async function removeFavouriteEpisode(username, episodeId) {
             }
             return user
         })
-        .then(user => updateUser(username, user))
+        .then(updateUser)
 }
 
-async function updateUser(username, user) {
-    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`, {
+async function setFilmRenderStyleToUser(username, style){
+    fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            user.filmRenderStyle = style
+            return user
+        })
+        .then(updateUser)
+}
+
+async function saveSortConfigurationForUser(username, sortBy, sortType){
+    fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            user.sortBy = sortBy
+            user.sortType = sortType
+            return user
+        })
+        .then(updateUser)
+}
+
+async function updateUser(user) {
+    return fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${user.username}.json`, {
         method: 'PUT',
         body: JSON.stringify(user),
         headers: {

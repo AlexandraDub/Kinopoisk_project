@@ -17,9 +17,15 @@
     align-items: flex-end;
 }
 .button_login {
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
+    width: 100px;
+    height: 59px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: mediumpurple 0px 0px 22px 8px;
+    color: aliceblue;
+    background-color: rgb(34, 12, 54);
+    letter-spacing: 4px;
+    text-shadow: mediumpurple 2px 2px 2px;
 }
 .login {
     margin: 0;

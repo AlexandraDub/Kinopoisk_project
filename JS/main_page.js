@@ -1,45 +1,36 @@
-let userData = null
-let favouriteEpisodes = null
-
-const filmsImagesContainer = document.querySelector('.films')
 const filmsCount = 6
 
 const filmDataArr = []
 const episodeIdToSwapiIdMap = new Map()
 
-const signInButton = document.querySelector('#login')
-const ascSort = document.querySelector('#sort')
-//ascSort.addEventListener('change', sortFilms)
-const listView = document.querySelector('#list_view')
-const tilesView = document.querySelector('#tiles_view')
+let userData = null
+let favouriteEpisodesSet = null
 
-//listView.addEventListener('click', listViewApply)
-//tilesView.addEventListener('click', tilesViewApply)
+const filmsImagesContainer = document.querySelector('.films')
+
+const filmSortSelect = document.querySelector('#sort')// rename
+const listRenderStyleButton = document.querySelector('#list_view')
+const tilesRenderStyleButton = document.querySelector('#tiles_view')
+
+filmSortSelect.addEventListener('change', sortFilms)
+listRenderStyleButton.addEventListener('click', applyListFilmRenderStyle)
+tilesRenderStyleButton.addEventListener('click', applyTilesFilmRenderStyle)
 
 const loaderWrapper = document.createElement('div')
 const loader = document.createElement('div')
-
-
-
-//const preferenceFilms = new Set(getPreferenceFilm('sasa'))
-
+const signInButton = document.querySelector('#login')
 
 async function fetchData() {
-    //showLoader()
-
+    showLoader()
 
     // fetch user
-    console.log('fetch user')
     const sessionId = localStorage.getItem('my_star_wars_session_id')
-    console.log('sessionId', sessionId)
-
     if (sessionId !== null) {
         let user = await fetchUserData(sessionId)
-        console.log('user', user)
         userData = user
 
         const favouriteEpisodesArr = user ? (user.favouriteEpisodes ? user.favouriteEpisodes : []) : []
-        favouriteEpisodes = new Set(favouriteEpisodesArr)
+        favouriteEpisodesSet = new Set(favouriteEpisodesArr)
     }
 
     // fetch films
@@ -62,9 +53,7 @@ function filmsRender() {
 
     filmsImagesContainer.innerHTML = ''
 
-    //hideLoader()
-
-    
+    hideLoader()
 
     for (let i = 1; i <= filmsCount; i++) {
 
@@ -76,45 +65,43 @@ function filmsRender() {
         episodeDiv.style.backgroundImage = `url(../Images/ep${filmData.episode_id}.png)`;
         episodeDiv.classList.add('episode')
 
-        const favoriteIcon = document.createElement('div')
-
-        favoriteIcon.classList.add('favorites_container')
-
+        // favourite icon
         if (userData) {
-            if (favouriteEpisodes.has(filmData.episode_id)) {
-                favoriteIcon.classList.add('is-in-favourite') // rename
+            const favouriteIconDiv = document.createElement('div')
+            favouriteIconDiv.classList.add('favorites_container')//fix typo
+
+            if (favouriteEpisodesSet.has(filmData.episode_id)) {
+                favouriteIconDiv.classList.add('is-in-favourite') // rename
             }
-        } else {
-            favoriteIcon.classList.add('favorites_container_hidden')
-        }
-        favoriteIcon.innerHTML = `<i class="fa fa-star fa-2x" class="favorites" id=favoriteEpisode${filmData.episode_id}></i>`
 
-        favoriteIcon.addEventListener('click', switchFavourite)
+            favouriteIconDiv.innerHTML = `<i class="fa fa-star fa-2x" class="favorites" id=favoriteEpisode${filmData.episode_id}></i>`
 
-        function switchFavourite() {
-            if (favouriteEpisodes.has(filmData.episode_id)) {
-                console.log('switch favourite - delete')
-                favouriteEpisodes.delete(filmData.episode_id)
-                favoriteIcon.classList.remove('is-in-favourite') // rename class
+            favouriteIconDiv.addEventListener('click', switchFavourite)
 
-                removeFavouriteEpisode(userData.username, filmData.episode_id)
+            function switchFavourite() {
+                if (favouriteEpisodesSet.has(filmData.episode_id)) {
+                    console.log('switch favourite - delete')
+                    favouriteEpisodesSet.delete(filmData.episode_id)
+                    favouriteIconDiv.classList.remove('is-in-favourite') // rename class
 
-            } else {
-                console.log('switch favourite - add')
-                favouriteEpisodes.add(filmData.episode_id)
-                favoriteIcon.classList.add('is-in-favourite')
+                    removeFavouriteEpisodeFromUser(userData.username, filmData.episode_id)
+                } else {
+                    console.log('switch favourite - add')
+                    favouriteEpisodesSet.add(filmData.episode_id)
+                    favouriteIconDiv.classList.add('is-in-favourite')
 
-                addFavouriteEpisode(userData.username, filmData.episode_id)
-
+                    addFavouriteEpisodeToUser(userData.username, filmData.episode_id)
+                }
             }
+            episodeAndInfoContainerDiv.prepend(favouriteIconDiv)
         }
-        
-        let userPreferences = 'episode_tile'
-        episodeDiv.classList.add(userPreferences)
 
+        // tile or list
+        let filmRenderStyle = userData.filmRenderStyle
+        episodeDiv.classList.add(filmRenderStyle)
         episodeInfoDiv.classList.add('films_info')
 
-        if (userPreferences === 'episode_list') {
+        if (filmRenderStyle === 'episode_list') {
             filmsImagesContainer.classList.add('films_list')
             episodeInfoDiv.classList.add('films_info_list')
             episodeAndInfoContainerDiv.classList.add('episode_and_info_container_list')
@@ -125,59 +112,56 @@ function filmsRender() {
         filmsImagesContainer.append(episodeAndInfoContainerDiv)
         episodeAndInfoContainerDiv.append(episodeDiv)
         episodeAndInfoContainerDiv.append(episodeInfoDiv)
-        episodeAndInfoContainerDiv.prepend(favoriteIcon)
-        // episodeAndInfoContainer.classList.remove('hidden')
+
+        // episodeAndInfoContainer.classList.remove('hidden') - check if it is needed
         episodeDiv.addEventListener('click', openFilmsDescription)
 
         function openFilmsDescription(event) {
             event.preventDefault()
             window.location = `film_description.html?swapiId=${episodeIdToSwapiIdMap.get(filmData.episode_id)}&episodeId=${filmData.episode_id}`
         }
-
     }
 }
 
 
 
 
-function listViewApply() {
-
-    // получаем юзера из куки
-
-    // получаем юзердату из локалсторадж по имени юзера
-    // let userdata = localstorage.get...
-
-    // userdata.view = 'list' 
-    updateViewPreferences('sasa', 'episode_list')
-
+function applyListFilmRenderStyle() {
     let episodes = document.querySelectorAll('.episode')
     let informs = document.querySelectorAll('.films_info')
     let epInfContainers = document.querySelectorAll('.episode_and_info_container')
+
     episodes.forEach(e => e.classList.remove('episode_tile'))
-    episodes.forEach(e => e.classList.remove('episode_list'))
     episodes.forEach(e => e.classList.add('episode_list'))
     informs.forEach(e => e.classList.add('films_info_list'))
     filmsImagesContainer.classList.add('films_list')
     epInfContainers.forEach(e => e.classList.add('episode_and_info_container_list'))
+
+    if (userData) {
+        console.log('setting list render type episode_list')
+        userData.filmRenderStyle = 'episode_list'
+        setFilmRenderStyleToUser(userData.username, 'episode_list')
+    }
 }
 
-function tilesViewApply() {
-
-    updateViewPreferences('sasa', 'episode_tile')
-
-
+function applyTilesFilmRenderStyle() {
     let episodes = document.querySelectorAll('.episode')
     let informs = document.querySelectorAll('.films_info')
     let epInfContainers = document.querySelectorAll('.episode_and_info_container')
+
     episodes.forEach(e => e.classList.remove('episode_list'))
-    episodes.forEach(e => e.classList.remove('episode_tile'))
     episodes.forEach(e => e.classList.add('episode_tile'))
     filmsImagesContainer.classList.remove('films_list')
     informs.forEach(e => e.classList.remove('films_info_list'))
     epInfContainers.forEach(e => e.classList.remove('episode_and_info_container_list'))
+
+    if (userData) {
+        console.log('setting tile render type - episode_tile')
+
+        userData.filmRenderStyle = 'episode_tile'
+        setFilmRenderStyleToUser(userData.username, 'episode_tile')
+    }
 }
-
-
 
 // Sort comparing functions 
 function sortByEpisodeAsc(filmData1, filmData2) {
@@ -225,6 +209,65 @@ function sortFilmDataArr() {
     }
 }
 
+function sortFilms() {
+
+    if (filmSortSelect.value === 'episode_ascending_sort') {
+        if (userData) {
+            userData.sortBy = 'episode_id'
+            userData.sortType = 'asc'
+            sortFilmDataArr()
+
+            saveSortConfigurationForUser(userData.username, 'episode_id', 'asc')
+        }
+        else {
+            filmDataArr.sort(sortByEpisodeAsc)
+        }
+    }
+
+    if (filmSortSelect.value === 'episode_descending_sort') {
+        if (userData) {
+            userData.sortBy = 'episode_id'
+            userData.sortType = 'desc'
+            sortFilmDataArr()
+
+            saveSortConfigurationForUser(userData.username, 'episode_id', 'desc')
+        }
+        else {
+            filmDataArr.sort(sortByEpisodeDesc)
+        }
+    }
+
+    if (filmSortSelect.value === 'release_ascending_sort') {
+        if (userData) {
+            userData.sortBy = 'release_date'
+            userData.sortType = 'asc'
+            sortFilmDataArr()
+
+            saveSortConfigurationForUser(userData.username, 'release_date', 'asc')
+        }
+        else {
+            filmDataArr.sort(sortByReleaseDateAsc)
+        }
+    }
+
+    if (filmSortSelect.value === 'release_descending_sort') {
+        if (userData) {
+            userData.sortBy = 'release_date'
+            userData.sortType = 'desc'
+            sortFilmDataArr()
+
+            saveSortConfigurationForUser(userData.username, 'release_date', 'desc')
+        }
+        else {
+            filmDataArr.sort(sortByReleaseDateDesc)
+        }
+    }
+
+    filmsRender()
+}
+
+
+
 // spinner
 function showLoader() {
     loaderWrapper.classList.add('loader_wrapper')
@@ -243,16 +286,6 @@ function hideLoader() {
 
 fetchData()
 
-
-
-// РЕГИСТРАЦИЯ
-
-    // let userData = {}
-    // userdata.password = apple12345
-    // userdata.view = 'tile'
-    // userdata.ava = 'ava12.jpg'
-
-    // сохраняешь в локалсторадж юзердату против имени   
 
 
 

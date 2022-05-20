@@ -33,28 +33,25 @@
             </header>
             <div class="log__form">
                 <div class="log__form__container">
-                    <form id="contact"
-                        action="https://fe.it-academy.by/TestForm.php"
-                        method="get">
+                    <form id="contact" class="contact_form">
                         <h1> Registration</h1>
-                        <input type="text" id="username" placeholder="Create username" name="username" required
+                        <input type="text" id="username" class="contact_input" placeholder="Create username" name="username" required
                             autocomplete="off" maxlength="20" minlength="2">
                         <div class="input__line__under username"></div>
-                        <input placeholder="Enter your e-mail" type="email"
-                            id="email" name="email" required autocomplete="off"
+                        <input placeholder="Enter your e-mail" type="email" class="contact_input" id="email" name="email" required autocomplete="off"
                             maxlength="20" minlength="2">
                         <div class="input__line__under email"></div>
                         <input placeholder="Create your password"
-                            type="password" id="password" name="password"
+                            type="password" id="password" class="contact_input" name="password"
                             required autocomplete="off" maxlength="20"
                             minlength="4">
                         <div class="input__line__under password"></div>
                         <input placeholder="Repeat your password"
-                            id="repeatPassword" type="password" name="repeatPassword"
+                            id="repeatPassword" class="contact_input" type="password" name="repeatPassword"
                             required autocomplete="off" maxlength="20"
                             minlength="4">
                         <div class="input__line__under passwordCheck"></div>
-                        <button name="Send" type="submit" id="contact-submit"
+                        <button name="Send" type="submit" id="contact-submit" class="contact_button"
                             data-submit="...Sending">Sign up
                         </button>
                         <div class="under__log__form">Already registred?<a
