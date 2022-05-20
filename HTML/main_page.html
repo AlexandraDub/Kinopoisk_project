@@ -11,18 +11,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/b6e751cdad.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Kinopoisk/Main_page</title>
 </head>
 <body>
     <div class="main__container">
         <header class="header">
-            <div class="search">
-                <button class="material-symbols-outlined" id="search_button">search</button>
-                <input type="text" class="search_input" id="search" placeholder="Search by Title or Genre or Years" autocomplete="off">
+            <div class="logo logo_main">
+                Star&nbsp;Wars&nbsp;Fans
             </div>
             <div class="login">
-                <button id="login" class="button_login"><a href="login.html" class="link_to_login">Sign in</a></button>
+                <button id="login" class="button_login"><a href="login.html" class="link_to_login">Sign in</a><span class="material-symbols-outlined">
+                    settings
+                    </span></button>
             </div>
         </header>
         <div class="films__container">
@@ -65,6 +67,7 @@
     <script src="../JS/storage_manager.js"></script>
     <script src="../JS/local_storage_manager.js"></script>
     <script src="../JS/main_page.js"></script>
+    <script src="../JS/login.js"></script>
     
 </body>
 </html>

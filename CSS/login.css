@@ -125,3 +125,8 @@
         font-size: 25px;
     }
 }
+.error_message {
+    font-style: italic;
+    font-size: smaller;
+    color: darkred;
+}

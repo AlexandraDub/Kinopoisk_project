@@ -85,6 +85,7 @@ function descriptionRender() {
     text.classList.add('desc_item')
     text.innerHTML = `<span>Opening:${infoData.opening_crawl}</span>`
     const charactersTextInfo = document.createElement('div')
+    charactersTextInfo.classList.add('characters_info')
     charactersTextInfo.textContent = 'Characters:'
     
     containerForFilmDescription.prepend(favoriteIcon)
@@ -103,6 +104,7 @@ function descriptionRender() {
     
 }
 const charactersContainer = document.createElement('div')
+const buttonLoadMore = document.querySelector('.load_more')
 async function charactersLoad() {
     charactersContainer.classList.add('character')
     // characters.innerHTML = `<span>Characters${arrayOfCharacters[0]}</span>`
@@ -131,6 +133,7 @@ async function charactersLoad() {
 
     loadedCharacters += 5
 }
+buttonLoadMore.addEventListener('click', charactersLoad)
 
 function characterRender(result) {
     const pictureAndWikiWrapper = document.createElement('div')
@@ -142,6 +145,10 @@ function characterRender(result) {
     const wikiLinkWrapper = document.createElement('div')
     wikiLinkWrapper.innerHTML = `<a href = "${result.wiki}">${result.name}</a>`
     wikiLinkWrapper.classList.add('wiki_link')
+
+    const favouriteIcon = document.createElement('div')
+    favouriteIcon.innerHTML = `<i class="fa fa-star" id=favouriteCharacter:${result.name}></i>`
+    wikiLinkWrapper.append(favouriteIcon)
    
     charactersContainer.append(pictureAndWikiWrapper)
     pictureAndWikiWrapper.append(pictureWrapper)

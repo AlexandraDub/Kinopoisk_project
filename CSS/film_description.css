@@ -37,14 +37,14 @@
     justify-content: space-around;
     align-content: flex-start;
     gap: 3em;
-    margin: 140px 50px;
+    margin: 140px 50px 50px;
     font-size: 20px;
     text-shadow: 10px 10px 10px;
     position: relative;
 }
 .picture_episode {
     width: 42%;
-    height: 37%;
+    height: 22%;
     position: absolute;
     background-size: cover;
     top: 67px;
@@ -85,6 +85,9 @@
     top: -4%;
     cursor: pointer;
 }
+.characters_info {
+    margin: 0 auto;
+}
 .character {
     display:flex;
     flex-direction: row;
@@ -93,6 +96,7 @@
     border-radius: 50px;
     justify-content: space-evenly;
     padding: 20px;
+    margin: 0 auto;
 }
 .picture_wrapper {
     width: 100px;
@@ -111,4 +115,16 @@
     text-decoration: none;
     cursor: pointer;
     color: aliceblue;
+}
+.load_more {
+    width: 200px;
+    height: 59px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: none;
+    box-shadow: mediumpurple 0px 0px 22px 8px;
+    color: aliceblue;
+    background-color: rgb(34, 12, 54);
+    letter-spacing: 4px;
+    text-shadow: mediumpurple 2px 2px 2px;
 }
