@@ -1,7 +1,9 @@
 const containerForFilmDescription = document.querySelector('.description__container')
 const backgroundContainer = document.querySelector('.main__container__description')
 let infoData = {}
+let username = ''
 const arrayOfCharacters = []
+const favouriteEpisodeSet = new Set()
 
 let loadedCharacters = 0;
 
@@ -11,18 +13,28 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 const swapiId = params.swapiId
 const episodeId = params.episodeId
-const preferenceFilms = new Set(getPreferenceFilm('sasa'))
 
 backgroundContainer.style.backgroundImage = `url(../Images/ep${episodeId}bg.jpg)`;
 containerForFilmDescription.id = `episode${episodeId}`
-console.log(swapiId);
 
 async function descriptionLoad() {
-    
+    // redirect
+    const sessionId = localStorage.getItem('my_star_wars_session_id')
+    if (!sessionId){
+        window.location.href = 'registration.html'
+    }
+    username = sessionId.split('_')[0]
+
+    // fetch film data
     let response = await fetch(`https://swapi.dev/api/films/${swapiId}/`);
     let result = await response.json();
-    console.log(result)
     infoData = result
+
+    //fetch user
+    const user = await fetchUserData(sessionId)
+    if (user.favouriteEpisodes){
+        user.favouriteEpisodes.forEach(e=> favouriteEpisodeSet.add(e))    
+    }
     descriptionRender()
 }
 
@@ -33,18 +45,20 @@ function descriptionRender() {
     favoriteIcon.classList.add('favorites_container')
     favoriteIcon.innerHTML = `Add this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
     favoriteIcon.addEventListener('click',changePreferenceFilm)
-    if (preferenceFilms.has(infoData.episode_id)){
+    if (favouriteEpisodeSet.has(infoData.episode_id)){
         favoriteIcon.classList.add('is-in-favourite')
     }
         function changePreferenceFilm() {
-            if (preferenceFilms.has(infoData.episode_id)){
-                preferenceFilms.delete(infoData.episode_id)
+            if (favouriteEpisodeSet.has(infoData.episode_id)){
+                favouriteEpisodeSet.delete(infoData.episode_id)
                 favoriteIcon.classList.remove('is-in-favourite')
-                removePreferenceFilm('sasa', infoData.episode_id)
+                
+                removeFavouriteEpisodeFromUser(username, infoData.episode_id)
             } else {
-                preferenceFilms.add(infoData.episode_id)
+                favouriteEpisodeSet.add(infoData.episode_id)
                 favoriteIcon.classList.add('is-in-favourite')
-                addPreferenceFilm('sasa', infoData.episode_id)
+
+                addFavouriteEpisodeToUser(username, infoData.episode_id)
             }
         }
 
@@ -134,5 +148,7 @@ function characterRender(result) {
     pictureAndWikiWrapper.append(wikiLinkWrapper)
 
 }
+
+
 
 descriptionLoad()
