@@ -1,6 +1,5 @@
 const errorMessageDiv = document.getElementById('error_message')
-// const avaWrapper = document.querySelector('.ava_wrapper')
-// const helloToUser = document.querySelector('.user_say_hello')
+
 loginForm.addEventListener('submit', submitLoginForm)
 function submitLoginForm(event) {
     event.preventDefault()
@@ -27,8 +26,3 @@ document.querySelectorAll('.login_input').forEach(() => {
     addEventListener('click', deleteErrorMessage)
 })
 
-// function createUserAccountMenu(username, avatar) {
-//     helloToUser.innerHTML = `Hi, ${username}!`
-// }
-//<div class="ava_wrapper"></div>
-//<div class="user_say_hello"></div>

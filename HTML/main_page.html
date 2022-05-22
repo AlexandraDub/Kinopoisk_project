@@ -22,9 +22,22 @@
                 Star&nbsp;Wars&nbsp;Fans
             </div>
             <div class="login">
-                <button id="login" class="button_login"><a href="login.html" class="link_to_login">Sign in</a><span class="material-symbols-outlined">
-                    settings
-                    </span></button>
+                <button id="login" class="button_login"><a href="login.html" class="link_to_login">Sign in</a></button>
+            </div>
+            <div class="login_user hidden">
+                <div class="ava_wrapper"></div>
+                <div class="greeting"></div>
+                <div class="dropdown">
+                    <button data-path="one" class="dropdown-toggle settings"><span class="material-symbols-outlined">settings</span>
+                    </button>
+                    <ul data-target="one" class="dropdown-menu">
+                        <li><a class="dropdown-item" href="favourites.html">My favourites&nbsp;&starf;</a></li>
+                        <li class="logout_li"><span class="material-symbols-outlined">
+                            logout
+                            </span><a class="dropdown-item" href="login.html">Log out</a></li>
+                    </ul>
+                </div>
+
             </div>
         </header>
         <div class="films__container">
@@ -65,9 +78,7 @@
         </footer>
     </div>
     <script src="../JS/storage_manager.js"></script>
-    <script src="../JS/local_storage_manager.js"></script>
     <script src="../JS/main_page.js"></script>
-    <script src="../JS/login.js"></script>
     
 </body>
 </html>
