@@ -1,20 +1,21 @@
 .main__container__description { 
+    width: 100%;
     background-color:rgb(5, 5, 34);
     background-size: cover;
-    height: 1500px;
+    height: auto;
     color: aliceblue;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: 0 40px;
+    position: relative;
 }
 .header, .footer {
-    background-color: transparent;
+    background-color:rgba(73, 69, 69, 0.473);
 }
 .header {
     font-size: 20px;
-    justify-content: space-around;
-    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
 }
 .button_login {
     width: 100px;
@@ -38,9 +39,14 @@
     align-content: flex-start;
     gap: 3em;
     margin: 140px 50px 50px;
-    font-size: 20px;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    font-family: 'Kaushan Script', cursive;
     text-shadow: 10px 10px 10px;
     position: relative;
+}
+.desc_item {
+    font-family: 'Kaushan Script', cursive;
 }
 .picture_episode {
     width: 42%;
@@ -76,9 +82,6 @@
     color: #a4f186;
     text-shadow: 10px 11px 6px #020e01;
 }
-/* .desc_item {
-    
-} */
 .favorites_container {
     position: absolute;
     right: 28px;

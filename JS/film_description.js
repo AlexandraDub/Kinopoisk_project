@@ -1,5 +1,6 @@
 const containerForFilmDescription = document.querySelector('.description__container')
 const backgroundContainer = document.querySelector('.main__container__description')
+let userData = {}
 let infoData = {}
 let username = ''
 const arrayOfCharacters = []
@@ -23,40 +24,47 @@ async function descriptionLoad() {
     if (!sessionId){
         window.location.href = 'registration.html'
     }
+    
     username = sessionId.split('_')[0]
 
     // fetch film data
-    let response = await fetch(`https://swapi.dev/api/films/${swapiId}/`);
+    let response = await fetch(`https://swapi.py4e.com/api/films/${swapiId}/`);
     let result = await response.json();
     infoData = result
 
     //fetch user
     const user = await fetchUserData(sessionId)
+    userData = user
     if (user.favouriteEpisodes){
         user.favouriteEpisodes.forEach(e=> favouriteEpisodeSet.add(e))    
     }
+    showUserMenu()
     descriptionRender()
 }
 
 
 function descriptionRender() {
 
-    const favoriteIcon = document.createElement('div')
-    favoriteIcon.classList.add('favorites_container')
-    favoriteIcon.innerHTML = `Add this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
-    favoriteIcon.addEventListener('click',changePreferenceFilm)
+    const favouriteIconContainer = document.createElement('div')
+    containerForFilmDescription.prepend(favouriteIconContainer)
+    favouriteIconContainer.classList.add('favorites_container')
+    favouriteIconContainer.innerHTML = `Add this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
+    favouriteIconContainer.addEventListener('click',changePreferenceFilm)
     if (favouriteEpisodeSet.has(infoData.episode_id)){
-        favoriteIcon.classList.add('is-in-favourite')
+        favouriteIconContainer.classList.add('is-in-favourite')
+        favouriteIconContainer.innerHTML = `Remove this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
     }
         function changePreferenceFilm() {
             if (favouriteEpisodeSet.has(infoData.episode_id)){
                 favouriteEpisodeSet.delete(infoData.episode_id)
-                favoriteIcon.classList.remove('is-in-favourite')
+                favouriteIconContainer.classList.remove('is-in-favourite')
+                favouriteIconContainer.innerHTML = `Add this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
                 
                 removeFavouriteEpisodeFromUser(username, infoData.episode_id)
             } else {
                 favouriteEpisodeSet.add(infoData.episode_id)
-                favoriteIcon.classList.add('is-in-favourite')
+                favouriteIconContainer.classList.add('is-in-favourite')
+                favouriteIconContainer.innerHTML = `Remove this episode to your favorites <i class="fa fa-star fa-3x" class="favorites" id=favoriteEpisode${episodeId}></i>`
 
                 addFavouriteEpisodeToUser(username, infoData.episode_id)
             }
@@ -68,7 +76,7 @@ function descriptionRender() {
 
     const numberOfEpisode = document.createElement('div')
     numberOfEpisode.classList.add('desc_item')
-    numberOfEpisode.innerHTML = `<span>Episode${infoData.episode_id}</span>`
+    numberOfEpisode.innerHTML = `<span>Episode&nbsp;${infoData.episode_id}</span>`
     const name = document.createElement('div')
     name.classList.add('desc_item')
     name.innerHTML = `<span>${infoData.title}</span>`
@@ -88,7 +96,7 @@ function descriptionRender() {
     charactersTextInfo.classList.add('characters_info')
     charactersTextInfo.textContent = 'Characters:'
     
-    containerForFilmDescription.prepend(favoriteIcon)
+    
     containerForFilmDescription.append(pictureEpisode)
     containerForFilmDescription.append(numberOfEpisode)
     containerForFilmDescription.append(name)
@@ -107,7 +115,6 @@ const charactersContainer = document.createElement('div')
 const buttonLoadMore = document.querySelector('.load_more')
 async function charactersLoad() {
     charactersContainer.classList.add('character')
-    // characters.innerHTML = `<span>Characters${arrayOfCharacters[0]}</span>`
     containerForFilmDescription.append(charactersContainer)
     for(let n = loadedCharacters; n < loadedCharacters + 5; n++) {
         if (infoData.characters[n] != null){

@@ -13,6 +13,8 @@
     <script src="https://kit.fontawesome.com/b6e751cdad.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
     <title>Kinopoisk/Main_page/Film_description</title>
 </head>
 <body>
@@ -23,6 +25,21 @@
             </div>
             <div class="login">
                 <button id="login" class="button_login"><a href="login.html" class="link_to_login">Sign in</a></button>
+            </div>
+            <div class="login_user hidden">
+                <div class="ava_wrapper"></div>
+                <div class="greeting"></div>
+                <div class="dropdown">
+                    <button data-path="one" class="dropdown-toggle settings"><span class="material-symbols-outlined">settings</span>
+                    </button>
+                    <ul data-target="one" class="dropdown-menu">
+                        <li><a class="dropdown-item" href="favourites.html">My favourites&nbsp;&starf;</a></li>
+                        <li class="logout_li"><span class="material-symbols-outlined">
+                            logout
+                            </span><a class="dropdown-item" href="login.html">Log out</a></li>
+                    </ul>
+                </div>
+
             </div>
         </header>
         <div class="description__container">
@@ -48,8 +65,11 @@
             <div class="rights">Copyright 2022 All rights reserved AlexandraDub</div>
         </footer>
     </div>
+
     <script src="../JS/storage_manager.js"></script>
+    <script src="../JS/user_menu.js"></script>
     <script src="../JS/film_description.js"></script>
+    
     
 </body>
 </html>

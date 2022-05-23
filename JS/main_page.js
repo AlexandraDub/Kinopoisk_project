@@ -18,18 +18,8 @@ tilesRenderStyleButton.addEventListener('click', applyTilesFilmRenderStyle)
 
 const loaderWrapper = document.createElement('div')
 const loader = document.createElement('div')
-const signInButton = document.querySelector('#login')
-const loginMenu = document.querySelector('.login')
-const loginUserMenu = document.querySelector('.login_user')
-const avaWrapper = document.querySelector('.ava_wrapper')
-const greeting = document.querySelector('.greeting')
 
-function showUserMenu() {
-    loginMenu.classList.add('hidden')
-    loginUserMenu.classList.remove('hidden')
-    avaWrapper.style.backgroundImage = `url(../Images/reg_avatar/ava${userData.ava}.jpg)`
-    greeting.textContent = `May the Force be with you, ${userData.username}!`
-}
+
 
 async function fetchData() {
     showLoader()
@@ -47,7 +37,7 @@ async function fetchData() {
 
     // fetch films
     for (let i = 1; i <= filmsCount; i++) {
-        let response = await fetch(`https://swapi.dev/api/films/${i}/`);
+        let response = await fetch(`https://swapi.py4e.com/api/films/${i}/`);
         let result = await response.json();
         console.log('fetch film', result)
         filmDataArr.push(result)
@@ -297,28 +287,5 @@ function hideLoader() {
 }
 
 fetchData()
-
-const settingsButton = document.querySelector('.settings')
-settingsButton.addEventListener('click', openDropdownMenu)
-function openDropdownMenu(){
-    const menu = document.querySelector('.dropdown-menu')
-    if(!menu.classList.contains('open')) {
-        menu.classList.remove('menu-active')
-        menu.classList.remove('open')
-        menu.classList.add('menu-active')
-        intervalId = setTimeout(() => {
-            menu.classList.add('open');
-        }, 0);
-
-    }
-    if (menu.classList.contains('open')) {
-        clearTimeout(intervalId);
-        menu.classList.remove('menu-active');
-        intervalId = setTimeout(() => {
-            menu.classList.remove('open');
-        }, 0);
-    }
-    
-}
 
 
