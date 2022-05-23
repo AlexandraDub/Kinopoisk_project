@@ -6,7 +6,7 @@
 }
 .main__container, .login__container { 
     background: linear-gradient(90deg, #131111,#43225e);
-    height: 1500px;
+    height: auto;
     color: aliceblue;
     display: flex;
     flex-direction: column;
@@ -105,6 +105,12 @@
     letter-spacing: 4px;
     text-shadow: mediumpurple 2px 2px 2px;
 }
+.logout_button {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    cursor: pointer;
+}
 .settings {
     padding: 0;
     border: none;
@@ -172,6 +178,12 @@
     align-items: flex-end;
     justify-content: space-evenly;
     font-size: x-large;
+}
+.view_options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 50px;
 }
 #sort {
     border: none;

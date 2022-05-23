@@ -6,6 +6,8 @@ const episodeIdToSwapiIdMap = new Map()
 let userData = null
 let favouriteEpisodesSet = null
 
+let guestUserFilmRenderStyle = 'episode_tile'
+
 const filmsImagesContainer = document.querySelector('.films')
 
 const filmSortSelect = document.querySelector('#sort')// rename
@@ -99,7 +101,11 @@ function filmsRender() {
         }
 
         // tile or list
-        let filmRenderStyle = userData.filmRenderStyle
+        let filmRenderStyle = guestUserFilmRenderStyle
+        if (userData){
+            filmRenderStyle = userData.filmRenderStyle
+        }
+        
         episodeDiv.classList.add(filmRenderStyle)
         episodeInfoDiv.classList.add('films_info')
 
@@ -143,6 +149,8 @@ function applyListFilmRenderStyle() {
         console.log('setting list render type episode_list')
         userData.filmRenderStyle = 'episode_list'
         setFilmRenderStyleToUser(userData.username, 'episode_list')
+    } else {
+        guestUserFilmRenderStyle = 'episode_list'
     }
 }
 
@@ -162,6 +170,8 @@ function applyTilesFilmRenderStyle() {
 
         userData.filmRenderStyle = 'episode_tile'
         setFilmRenderStyleToUser(userData.username, 'episode_tile')
+    } else {
+        guestUserFilmRenderStyle = 'episode_tile'
     }
 }
 

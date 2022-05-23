@@ -35,9 +35,11 @@ function openDropdownMenu(){
     
 }
 
-const logOutButton = document.querySelector('.logout_li')
+const logOutButton = document.querySelector('.logout_button')
 logOutButton.addEventListener('click', logOut)
 
 function logOut() {
-    localStorage.removeItem('my_star_wars_session_id', sessionId)
+    console.log('log out')
+    localStorage.removeItem('my_star_wars_session_id')
+    window.location.assign('login.html')
 }
