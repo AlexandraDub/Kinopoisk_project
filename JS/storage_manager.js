@@ -71,6 +71,19 @@ async function addFavouriteEpisodeToUser(username, episodeId) {
         .then(updateUser)
 }
 
+async function addFavouriteCharacterToUser(username, characterId) {
+    fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            if (!user.favouriteCharacters) {
+                user.favouriteCharacters = []
+            }
+            user.favouriteCharacters.push(characterId)
+            return user
+        })
+        .then(updateUser)
+}
+
 async function removeFavouriteEpisodeFromUser(username, episodeId) {
     fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
         .then(response => response.json())
@@ -78,6 +91,19 @@ async function removeFavouriteEpisodeFromUser(username, episodeId) {
             const index = user.favouriteEpisodes.indexOf(episodeId);
             if (index > -1) {
                 user.favouriteEpisodes.splice(index, 1);
+            }
+            return user
+        })
+        .then(updateUser)
+}
+
+async function removeFavouriteCharacterFromUser(username, characterId) {
+    fetch(`https://kinopoisk-star-wars-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(user => {
+            const index = user.favouriteCharacters.indexOf(characterId);
+            if (index > -1) {
+                user.favouriteCharacters.splice(index, 1);
             }
             return user
         })

@@ -27,7 +27,16 @@ async function fetchData() {
     showLoader()
 
     // fetch user
-    const sessionId = localStorage.getItem('my_star_wars_session_id')
+    let sessionId = localStorage.getItem('my_star_wars_session_id')
+    if (sessionId !== null) {
+        let isExpired = checkSessionExpiredAndClearLocalStorage(sessionId)
+        if (isExpired) {
+            console.log('Expired')
+            sessionId = null
+        }
+    }
+
+
     if (sessionId !== null) {
         let user = await fetchUserData(sessionId)
         userData = user
@@ -80,9 +89,9 @@ function filmsRender() {
 
             favouriteIconDiv.innerHTML = `<i class="fa fa-star fa-2x" class="favorites" id=favoriteEpisode${filmData.episode_id}></i>`
 
-            favouriteIconDiv.addEventListener('click', switchFavourite)
+            favouriteIconDiv.addEventListener('click', switchFavouriteFilm)
 
-            function switchFavourite() {
+            function switchFavouriteFilm() {
                 if (favouriteEpisodesSet.has(filmData.episode_id)) {
                     console.log('switch favourite - delete')
                     favouriteEpisodesSet.delete(filmData.episode_id)
@@ -102,10 +111,10 @@ function filmsRender() {
 
         // tile or list
         let filmRenderStyle = guestUserFilmRenderStyle
-        if (userData){
+        if (userData) {
             filmRenderStyle = userData.filmRenderStyle
         }
-        
+
         episodeDiv.classList.add(filmRenderStyle)
         episodeInfoDiv.classList.add('films_info')
 

@@ -14,9 +14,9 @@ function showUserMenu() {
 const settingsButton = document.querySelector('.settings')
 settingsButton.addEventListener('click', openDropdownMenu)
 
-function openDropdownMenu(){
+function openDropdownMenu() {
     const menu = document.querySelector('.dropdown-menu')
-    if(!menu.classList.contains('open')) {
+    if (!menu.classList.contains('open')) {
         menu.classList.remove('menu-active')
         menu.classList.remove('open')
         menu.classList.add('menu-active')
@@ -32,7 +32,7 @@ function openDropdownMenu(){
             menu.classList.remove('open');
         }, 0);
     }
-    
+
 }
 
 const logOutButton = document.querySelector('.logout_button')
@@ -42,4 +42,28 @@ function logOut() {
     console.log('log out')
     localStorage.removeItem('my_star_wars_session_id')
     window.location.assign('login.html')
+}
+
+function checkSessionExpiredAndLogOut(sessionId) {
+    const startTime = sessionId.split('_')[1]
+    const currentTime = Date.now()
+
+    duration = currentTime - startTime
+    if (duration > 1 * 60 * 1000) {
+        localStorage.removeItem('my_star_wars_session_id')
+        window.location.assign('login.html?expired=true')
+    }
+}
+
+function checkSessionExpiredAndClearLocalStorage(sessionId){
+    console.log('expiration check')
+    const startTime = sessionId.split('_')[1]
+    const currentTime = Date.now()
+
+    duration = currentTime - startTime
+    if (duration > 1 * 60 * 1000) {
+        localStorage.removeItem('my_star_wars_session_id')
+        return true
+    } 
+    return false
 }

@@ -7,6 +7,7 @@ const arrayOfCharacters = []
 const favouriteEpisodeSet = new Set()
 
 let loadedCharacters = 0;
+let favouriteCharactersSet = new Set()
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
@@ -24,6 +25,7 @@ async function descriptionLoad() {
     if (!sessionId){
         window.location.href = 'registration.html'
     }
+    checkSessionExpiredAndLogOut(sessionId)
     
     username = sessionId.split('_')[0]
 
@@ -37,6 +39,9 @@ async function descriptionLoad() {
     userData = user
     if (user.favouriteEpisodes){
         user.favouriteEpisodes.forEach(e=> favouriteEpisodeSet.add(e))    
+    }
+    if (user.favouriteCharacters){
+        user.favouriteCharacters.forEach(c=> favouriteCharactersSet.add(c))
     }
     showUserMenu()
     descriptionRender()
@@ -128,14 +133,10 @@ async function charactersLoad() {
             let response = await fetch(starWarsUrl);
             let result = await response.json();
 
-            console.log(result)
+            console.log('character', result)
             //arrayOfCharacters.push(result)
             characterRender(result)
         }
-        
-
-        
-        
     }
 
     loadedCharacters += 5
@@ -153,16 +154,36 @@ function characterRender(result) {
     wikiLinkWrapper.innerHTML = `<a href = "${result.wiki}">${result.name}</a>`
     wikiLinkWrapper.classList.add('wiki_link')
 
-    const favouriteIcon = document.createElement('div')
-    favouriteIcon.innerHTML = `<i class="fa fa-star" id=favouriteCharacter:${result.name}></i>`
-    wikiLinkWrapper.append(favouriteIcon)
+    const favouriteIconDiv = document.createElement('div')
+    favouriteIconDiv.innerHTML = `<i class="fa fa-star" id=favouriteCharacter:${result.name}></i>`
+    if (favouriteCharactersSet.has(result.id)){
+        favouriteIconDiv.classList.add('is-in-favourite')
+    }
+    wikiLinkWrapper.append(favouriteIconDiv)
    
     charactersContainer.append(pictureAndWikiWrapper)
     pictureAndWikiWrapper.append(pictureWrapper)
     pictureAndWikiWrapper.append(wikiLinkWrapper)
 
+    favouriteIconDiv.addEventListener('click', switchFavouriteCharacter)
+
+    function switchFavouriteCharacter() {
+         if (favouriteCharactersSet.has(result.id)) {
+             console.log('switch favourite - delete')
+             favouriteCharactersSet.delete(result.id)
+             favouriteIconDiv.classList.remove('is-in-favourite') // rename class
+
+             removeFavouriteCharacterFromUser(userData.username, result.id)
+         } else {
+             console.log('switch favourite - add')
+             favouriteCharactersSet.add(result.id)
+             favouriteIconDiv.classList.add('is-in-favourite')
+
+             addFavouriteCharacterToUser(userData.username, result.id)
+         }
+     }
+
 }
 
-
-
 descriptionLoad()
+
