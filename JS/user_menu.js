@@ -61,7 +61,7 @@ function checkSessionExpiredAndClearLocalStorage(sessionId){
     const currentTime = Date.now()
 
     duration = currentTime - startTime
-    if (duration > 1 * 60 * 1000) {
+    if (duration > 3 * 60 * 1000) {
         localStorage.removeItem('my_star_wars_session_id')
         return true
     } 

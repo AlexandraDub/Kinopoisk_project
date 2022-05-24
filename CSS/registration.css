@@ -67,3 +67,13 @@
 i:checked{
    color: yellow;
 }
+.error_message {
+   font-style: italic;
+   font-size: smaller;
+   color: darkred;
+}
+@media only all and (max-width: 820px) {
+   .contact_input {
+      font-size: 25px;
+   }
+}

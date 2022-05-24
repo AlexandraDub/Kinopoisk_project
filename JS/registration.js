@@ -1,12 +1,5 @@
-//const buttonSubmitForm = document.querySelector('#contact-submit')
-//const inputUsername = document.querySelector('#username')
-//const inputEmail = document.querySelector('#email')
-//const inputPassword = document.querySelector('#password')
-//const inputPasswordCheck = document.querySelector('#passwordCheck')
-const errorUser = document.querySelector('.username')
-const errorEmail = document.querySelector('.email')
-const errorPassword = document.querySelector('.password')
-const errorNotSame = document.querySelector('.passwordCheck')
+const errorUser = document.getElementById('error_message_user')
+const errorPassword = document.getElementById('error_message_password')
 
 contact.addEventListener('submit', registerNewUser)
 
@@ -14,9 +7,10 @@ function registerNewUser(event) {
     event.preventDefault()
 
     const userData = new FormData(contact)
-    // TODO validate
     if (userData.get('password') != userData.get('repeatPassword')) {
-        alert('Password must be the same with you')
+        errorPassword.classList.remove('input__line__under')
+        errorPassword.classList.add('error_message')
+        errorPassword.innerHTML = 'Password must be the same with previous'
         return
     }
 
@@ -35,6 +29,16 @@ function createNewUserAndRedirect(username, password, email) {
 }
 
 function showErrorMessage() {
-    // TODO show error message 
-    alert('User already esist')
+    errorUser.classList.remove('input__line__under')
+    errorUser.classList.add('error_message')
+    errorUser.innerHTML =  'User already exist'
 }
+function deleteErrorMessage() {
+    errorUser.innerHTML = ''
+    errorPassword.innerHTML = ''
+    errorUser.classList.add('input__line__under')
+    errorPassword.classList.add('input__line__under')
+}
+document.querySelectorAll('.contact_input').forEach(() => {
+    addEventListener('click', deleteErrorMessage)
+})
