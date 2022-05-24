@@ -76,4 +76,10 @@ i:checked{
    .contact_input {
       font-size: 25px;
    }
+   .social_item {
+      margin-left: 56px;
+  }
+  .contacts, .rights {
+      font-size: 3vw;
+  }
 }

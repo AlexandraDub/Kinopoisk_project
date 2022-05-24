@@ -31,7 +31,6 @@ async function fetchData() {
     if (sessionId !== null) {
         let isExpired = checkSessionExpiredAndClearLocalStorage(sessionId)
         if (isExpired) {
-            console.log('Expired')
             sessionId = null
         }
     }
@@ -50,7 +49,6 @@ async function fetchData() {
     for (let i = 1; i <= filmsCount; i++) {
         let response = await fetch(`https://swapi.py4e.com/api/films/${i}/`);
         let result = await response.json();
-        console.log('fetch film', result)
         filmDataArr.push(result)
         episodeIdToSwapiIdMap.set(result.episode_id, i)
     }
@@ -61,11 +59,7 @@ async function fetchData() {
 }
 
 function filmsRender() {
-
-    console.log('Films rendering...')
-
     filmsImagesContainer.innerHTML = ''
-
     hideLoader()
 
     for (let i = 1; i <= filmsCount; i++) {
@@ -93,13 +87,11 @@ function filmsRender() {
 
             function switchFavouriteFilm() {
                 if (favouriteEpisodesSet.has(filmData.episode_id)) {
-                    console.log('switch favourite - delete')
                     favouriteEpisodesSet.delete(filmData.episode_id)
                     favouriteIconDiv.classList.remove('is-in-favourite') // rename class
 
                     removeFavouriteEpisodeFromUser(userData.username, filmData.episode_id)
                 } else {
-                    console.log('switch favourite - add')
                     favouriteEpisodesSet.add(filmData.episode_id)
                     favouriteIconDiv.classList.add('is-in-favourite')
 
@@ -155,7 +147,6 @@ function applyListFilmRenderStyle() {
     epInfContainers.forEach(e => e.classList.add('episode_and_info_container_list'))
 
     if (userData) {
-        console.log('setting list render type episode_list')
         userData.filmRenderStyle = 'episode_list'
         setFilmRenderStyleToUser(userData.username, 'episode_list')
     } else {
@@ -175,8 +166,6 @@ function applyTilesFilmRenderStyle() {
     epInfContainers.forEach(e => e.classList.remove('episode_and_info_container_list'))
 
     if (userData) {
-        console.log('setting tile render type - episode_tile')
-
         userData.filmRenderStyle = 'episode_tile'
         setFilmRenderStyleToUser(userData.username, 'episode_tile')
     } else {
@@ -202,30 +191,23 @@ function sortByReleaseDateDesc(filmData1, filmData2) {
 }
 
 function sortFilmDataArr() {
-    console.log('sorting films', userData)
     if (!userData) {
-        console.log('Unauthorized users cannot sort films')
         return
     }
 
     if (userData.sortBy === 'episode_id' && userData.sortType === 'asc') {
-        console.log('sorting by episode id asc')
         filmDataArr.sort(sortByEpisodeAsc)
     }
 
     if (userData.sortBy === 'episode_id' && userData.sortType === 'desc') {
-        console.log('sorting by episode desc')
-
         filmDataArr.sort(sortByEpisodeDesc)
     }
 
     if (userData.sortBy === 'release_date' && userData.sortType === 'asc') {
-        console.log('sorting by release date asc')
         filmDataArr.sort(sortByReleaseDateAsc)
     }
 
     if (userData.sortBy === 'release_date' && userData.sortType === 'desc') {
-        console.log('sorting by release date desc')
         filmDataArr.sort(sortByReleaseDateDesc)
     }
 }
@@ -296,8 +278,6 @@ function showLoader() {
     loader.innerHTML = "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>"
     filmsImagesContainer.append(loaderWrapper)
     loaderWrapper.append(loader)
-    //let epInfContainers = document.querySelectorAll('.episode_and_info_container')
-    //epInfContainers.forEach(e => e.classList.add('hidden'))
 
 }
 

@@ -11,7 +11,7 @@ let favouriteCharactersSet = new Set()
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
-  });
+});
 
 const swapiId = params.swapiId
 const episodeId = params.episodeId
@@ -127,14 +127,10 @@ async function charactersLoad() {
             let swapiUrl = infoData.characters[n]
             let swapiArr = swapiUrl.split('/')
             let characterId = swapiArr[swapiArr.length - 2]
-            console.log(swapiArr)
 
             let starWarsUrl = `https://star--wars.herokuapp.com/people/${characterId} `
             let response = await fetch(starWarsUrl);
             let result = await response.json();
-
-            console.log('character', result)
-            //arrayOfCharacters.push(result)
             characterRender(result)
         }
     }
@@ -168,20 +164,19 @@ function characterRender(result) {
     favouriteIconDiv.addEventListener('click', switchFavouriteCharacter)
 
     function switchFavouriteCharacter() {
-         if (favouriteCharactersSet.has(result.id)) {
-             console.log('switch favourite - delete')
-             favouriteCharactersSet.delete(result.id)
-             favouriteIconDiv.classList.remove('is-in-favourite') // rename class
+        if (favouriteCharactersSet.has(result.id)) {
+            favouriteCharactersSet.delete(result.id)
+            favouriteIconDiv.classList.remove('is-in-favourite') // rename class
 
-             removeFavouriteCharacterFromUser(userData.username, result.id)
-         } else {
-             console.log('switch favourite - add')
-             favouriteCharactersSet.add(result.id)
-             favouriteIconDiv.classList.add('is-in-favourite')
+            removeFavouriteCharacterFromUser(userData.username, result.id)
+        } else {
 
-             addFavouriteCharacterToUser(userData.username, result.id)
-         }
-     }
+            favouriteCharactersSet.add(result.id)
+            favouriteIconDiv.classList.add('is-in-favourite')
+
+            addFavouriteCharacterToUser(userData.username, result.id)
+        }
+    }
 
 }
 

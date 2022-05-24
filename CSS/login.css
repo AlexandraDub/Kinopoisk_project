@@ -7,6 +7,9 @@
     height: auto;
     width: 100%;
 }
+.logo > a:visited {
+    color: lavender; 
+}
 .back {
     background-color: transparent;
 }
@@ -134,14 +137,16 @@
     }
     .logo {
         width: 100%;
-        font-size: 40px;
+        font-size: 6vw;
         justify-content: space-between;
+        margin: 0;
+        padding: 5px 15px;
     }
     .social_item {
         margin-left: 56px;
     }
     .contacts, .rights {
-        font-size: 26px
+        font-size: 3vw;
     }
     .log__form {
         margin: 50px 0;

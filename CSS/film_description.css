@@ -17,6 +17,9 @@
     justify-content: space-between;
     align-items: center;
 }
+.logo > a:visited {
+    color: lavender; 
+}
 .button_login {
     width: 100px;
     height: 59px;
@@ -131,4 +134,53 @@
     background-color: rgb(34, 12, 54);
     letter-spacing: 4px;
     text-shadow: mediumpurple 2px 2px 2px;
+}
+
+/* --------------------- Media --------------------------- */
+@media only all and (max-width: 820px) {
+    .logo {
+        width: 80%;
+        font-size: 4vw;
+    }
+    .picture_episode {
+        display: none;
+    }
+    .favorites_container {
+        right: 102px;
+        top: -9%;
+        font-size: 3vw;
+    }
+    .description__container {
+        gap: 1em;
+        font-size: 4vw;
+    }
+    .social_item {
+        margin-left: 56px;
+    }
+    .contacts, .rights {
+        font-size: 3vw;
+    }
+}
+@media only all and (max-width: 500px) {
+    .character {
+        flex-direction: column;
+    }
+    .pic_wiki_wrap {
+        width: 100%;
+    }
+    .picture_wrapper {
+        width: 250px;
+        height: 300px;
+        border-radius: 100px;
+    }
+    .wiki_link {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-size: 7vw;
+    }
+    .favorites_container {
+        top: -4%;
+    }
 }
